@@ -3,21 +3,52 @@ import { AiOutlineArrowLeft } from 'react-icons/ai';
 import { useParams } from 'react-router-dom';
 
 const Jobs = ({name}) => {
-  const [jobs, setJobs] = useState(0);
+  const [jobs, setJobs] = useState(null);
+  const [newJob, setNewJob] = useState(null);
   const [isSubmit, setIsSubmit] = useState(false);
 
   const {user} = useParams();
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/${user}`, {
+    fetch(`https://jobs-backend-p2pa.onrender.com/api/${user}`, {
       method: 'GET',
       headers: { "Content-Type": 'application/json' },
     })
     .then((response) => response.json())
     .then((data) => setJobs(data.user.jobs));
-  }, [])
+  }, [user])
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
+    setIsSubmit(true);
+
+    setNewJob(jobs);
+
+    await fetch(`https://jobs-backend-p2pa.onrender.com/api/${user}`, {
+      method: 'POST',
+      headers: { "Content-Type": 'application/json' },
+      body: JSON.stringify({ jobs }), // Ensure jobs is a valid JSON object
+    })
+    .then((response) => {
+      console.log("Response Content: ", response); // Log the response content here
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json(); // Parse the response as JSON
+    })
+    .then((data) => {
+      // Handle the JSON data here
+      console.log("Parsed Data: ", data); // Log the parsed data here
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      // Handle errors here
+    })
+    .finally(() => {
+      setTimeout(() => {
+        setIsSubmit(false);
+      }, 1500)
+    });
+
 
   }
   
@@ -55,9 +86,9 @@ const Jobs = ({name}) => {
   //   // Store the updated data in localStorage
   //   localStorage.setItem('jobsData', JSON.stringify(parsedData));
 
-  //   setTimeout(() => {
-  //     setIsSubmit(false);
-  //   }, 1500)
+    // setTimeout(() => {
+    //   setIsSubmit(false);
+    // }, 1500)
   // };
 
   
