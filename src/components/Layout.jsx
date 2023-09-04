@@ -27,7 +27,7 @@ const Layout = () => {
           </Routes>
       </div>
 
-      <div className="col-span-8 max-sm:block hidden mt-auto">
+      <div className="fixed bottom-0 w-full col-span-8 max-sm:block hidden mt-auto">
           <Routes>
             <Route path="/" element={<Footer />} />
             <Route path='/:user/*' element={<Footer />} />
