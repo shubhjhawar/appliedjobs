@@ -9,42 +9,56 @@ const Jobs = ({name}) => {
   const {user} = useParams();
 
   useEffect(() => {
-    // Retrieve the stored data from localStorage
-    const storedData = localStorage.getItem('jobsData');
-
-    // Check if there is stored data
-    if (storedData) {
-      const parsedData = JSON.parse(storedData);
-
-      // Check if there is data for the current user
-      if (parsedData[user]) {
-        // Set the jobs value from stored data
-        setJobs(parsedData[user]);
-      } else {
-        setJobs(0);
-      }
-    }
-  }, [user]);
+    fetch(`http://localhost:5000/api/${user}`, {
+      method: 'GET',
+      headers: { "Content-Type": 'application/json' },
+    })
+    .then((response) => response.json())
+    .then((data) => setJobs(data.user.jobs));
+  }, [])
 
   const handleConfirm = () => {
-    setIsSubmit(true);
 
-    // Retrieve the stored data from localStorage
-    const storedData = localStorage.getItem('jobsData');
+  }
+  
 
-    // Parse the stored data or create an empty object
-    const parsedData = storedData ? JSON.parse(storedData) : {};
+  // useEffect(() => {
+  //   // Retrieve the stored data from localStorage
+  //   const storedData = localStorage.getItem('jobsData');
 
-    // Update or add the jobs value for the current user
-    parsedData[user] = jobs;
+  //   // Check if there is stored data
+  //   if (storedData) {
+  //     const parsedData = JSON.parse(storedData);
 
-    // Store the updated data in localStorage
-    localStorage.setItem('jobsData', JSON.stringify(parsedData));
+  //     // Check if there is data for the current user
+  //     if (parsedData[user]) {
+  //       // Set the jobs value from stored data
+  //       setJobs(parsedData[user]);
+  //     } else {
+  //       setJobs(0);
+  //     }
+  //   }
+  // }, [user]);
 
-    setTimeout(() => {
-      setIsSubmit(false);
-    }, 1500)
-  };
+  // const handleConfirm = () => {
+  //   setIsSubmit(true);
+
+  //   // Retrieve the stored data from localStorage
+  //   const storedData = localStorage.getItem('jobsData');
+
+  //   // Parse the stored data or create an empty object
+  //   const parsedData = storedData ? JSON.parse(storedData) : {};
+
+  //   // Update or add the jobs value for the current user
+  //   parsedData[user] = jobs;
+
+  //   // Store the updated data in localStorage
+  //   localStorage.setItem('jobsData', JSON.stringify(parsedData));
+
+  //   setTimeout(() => {
+  //     setIsSubmit(false);
+  //   }, 1500)
+  // };
 
   
   return (
