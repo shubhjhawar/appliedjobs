@@ -3,7 +3,7 @@ import { AiOutlineArrowLeft } from 'react-icons/ai';
 import { useParams } from 'react-router-dom';
 
 const Jobs = ({name}) => {
-  const [jobs, setJobs] = useState(null);
+  const [jobs, setJobs] = useState(0);
   const [newJob, setNewJob] = useState(null);
   const [isSubmit, setIsSubmit] = useState(false);
 
