@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Layout from "./components/Layout";
 import Jobs from './components/Jobs';
 
+export const Context = React.createContext();
+
 const App = () => {
+
+  const[theme, setTheme] = useState(true);
+
   return (
-    // className="bg-blue-500 text-white underline font-bold p-4"
-    <div>
+    <Context.Provider value={[theme, setTheme]}>
       <Layout children={<Jobs />} />
-    </div>
+    </Context.Provider>
   )
 }
 

@@ -1,7 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
 import { useParams } from 'react-router-dom';
 import { ColorRing } from 'react-loader-spinner';
+import { Context } from '../App';
+import { styles } from '../styles';
 
 const Jobs = ({name}) => {
   const [jobs, setJobs] = useState(null);
@@ -10,6 +12,7 @@ const Jobs = ({name}) => {
   const [isLoading, setisLoading] = useState(false);
 
   const {user} = useParams();
+  const[theme, setTheme] = useContext(Context);
 
   const getJobData = async () => {
     await fetch(`https://jobs-backend-p2pa.onrender.com/api/${user}`, {
@@ -123,9 +126,9 @@ const Jobs = ({name}) => {
   
   return (
     <div className="w-full h-grow">
-        <div className="border-2 border-black flex flex-col items-center justify-center rounded-xl p-10 m-10 h-[90%] shadow-2xl bg-gray-200">
+        <div className={`${theme ? styles.homeContainerLight : styles.homeContainerDark } border-2 flex flex-col items-center justify-center rounded-xl p-10 m-10 h-[90%] shadow-2xl`}>
            <div className='text-9xl leading-none'>
-            {isLoading ? (
+            {isLoading ? ( 
               <ColorRing
                 height="80"
                 width="80"
@@ -138,12 +141,12 @@ const Jobs = ({name}) => {
           </div>
           
           <div>
-            <p className='font-bold text-xl italic text-gray-600 border-b-2 border-black mb-10'>-Jobs applied for</p>
+            <p className={`${theme ? styles.jobsTextLight : styles.jobsTextDark } font-bold text-xl italic border-b-2  mb-10`}>-Jobs applied for</p>
           </div>
 
           <div className='flex flex-col items-center'>
             <button 
-              className=' w-full    bg-blue-500 py-2 mb-2 rounded-xl  shadow-md hover:shadow-xl text-white text-[100%] '
+              className={`w-full ${theme ? styles.addJobBtnLight : styles.addJobBtnDark } text-white py-2 mb-2 rounded-xl shadow-md hover:shadow-xl  text-[100%]`}
               onClick={()=>setJobs(jobs+1)}
             >
               Add a Job
@@ -153,7 +156,7 @@ const Jobs = ({name}) => {
                   className='  mr-1'
                   onClick={handleConfirm}
                   >
-                  <p className='bg-green-400 rounded-lg py-2 px-4 text-white shadow:md hover:shadow-lg hover:bg-green-500 text-[100%]'>Confirm</p>
+                  <p className={`${theme ? styles.confirmJobBtnLight : styles.confirmJobBtnDark } rounded-lg py-2 px-4 text-white shadow:md hover:shadow-lg text-[100%]`}>Confirm</p>
                 </button>
 
                 <button className=' ml-1 bg-orange-300 rounded-lg shadow-md hover:bg-orange-400 hover:shadow-lg items-center '
