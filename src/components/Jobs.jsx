@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
 import { useParams } from 'react-router-dom';
-import { InfinitySpin } from 'react-loader-spinner';
+import { ColorRing } from 'react-loader-spinner';
 
 const Jobs = ({name}) => {
   const [jobs, setJobs] = useState(null);
@@ -11,8 +11,8 @@ const Jobs = ({name}) => {
 
   const {user} = useParams();
 
-  const getJobData = () => {
-    fetch(`https://jobs-backend-p2pa.onrender.com/api/${user}`, {
+  const getJobData = async () => {
+    await fetch(`https://jobs-backend-p2pa.onrender.com/api/${user}`, {
       method: 'GET',
       headers: { "Content-Type": 'application/json' },
     })
@@ -21,16 +21,30 @@ const Jobs = ({name}) => {
   }
   useEffect(() => {
 
-    setisLoading(true);
-    getJobData();
-    setisLoading(false);
+    setisLoading(true); // Set loading to true before making the API request
+
+    getJobData()
+      .then(() => {
+        setisLoading(false); // Set loading to false when the data is received
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        setisLoading(false); // Set loading to false in case of an error
+      });
     
   }, [])
 
   useEffect(() => {
-    setisLoading(true);
-    getJobData();
-    setisLoading(false);
+    setisLoading(true); // Set loading to true before making the API request
+
+    getJobData()
+      .then(() => {
+        setisLoading(false); // Set loading to false when the data is received
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        setisLoading(false); // Set loading to false in case of an error
+      });
   }, [user])
 
   const handleConfirm = async () => {
@@ -112,9 +126,10 @@ const Jobs = ({name}) => {
         <div className="border-2 border-black flex flex-col items-center justify-center rounded-xl p-10 m-10 h-[90%] shadow-2xl bg-gray-200">
            <div className='text-9xl leading-none'>
             {isLoading ? (
-              <InfinitySpin 
-                color="red"
-                width="200"
+              <ColorRing
+                height="80"
+                width="80"
+                colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
               />
             ) : (
               <p className="text-red-500 font-semibold mb-5">{jobs}</p>
