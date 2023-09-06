@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from "./Header.jsx";
 import Footer from "./Footer.jsx";
 import LeftNav from "./LeftNav.jsx";
 import Jobs from './Jobs.jsx';
 import Home from './Home.jsx';
+import { Context } from '../App';
+import { styles } from '../styles/index';
 
 const Layout = () => {
+  const[theme, setTheme] = useContext(Context);
+
   return (
-    <div className='grid grid-cols-8  min-h-screen'>
+    <div className={`${theme ? styles.bgLight : styles.bgDark} grid grid-cols-8  min-h-screen`}>
       <div className="col-span-8 ">
         <Header />
       </div>
