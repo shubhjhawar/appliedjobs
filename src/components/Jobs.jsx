@@ -1,21 +1,36 @@
 import React, {useEffect, useState} from 'react';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
 import { useParams } from 'react-router-dom';
+import { InfinitySpin } from 'react-loader-spinner';
 
 const Jobs = ({name}) => {
-  const [jobs, setJobs] = useState(0);
+  const [jobs, setJobs] = useState(null);
   const [newJob, setNewJob] = useState(null);
   const [isSubmit, setIsSubmit] = useState(false);
+  const [isLoading, setisLoading] = useState(false);
 
   const {user} = useParams();
 
-  useEffect(() => {
+  const getJobData = () => {
     fetch(`https://jobs-backend-p2pa.onrender.com/api/${user}`, {
       method: 'GET',
       headers: { "Content-Type": 'application/json' },
     })
     .then((response) => response.json())
     .then((data) => setJobs(data.user.jobs));
+  }
+  useEffect(() => {
+
+    setisLoading(true);
+    getJobData();
+    setisLoading(false);
+    
+  }, [])
+
+  useEffect(() => {
+    setisLoading(true);
+    getJobData();
+    setisLoading(false);
   }, [user])
 
   const handleConfirm = async () => {
@@ -96,7 +111,15 @@ const Jobs = ({name}) => {
     <div className="w-full h-grow">
         <div className="border-2 border-black flex flex-col items-center justify-center rounded-xl p-10 m-10 h-[90%] shadow-2xl bg-gray-200">
            <div className='text-9xl leading-none'>
-            <p className="text-red-500 font-semibold mb-5">{jobs}</p>
+            {isLoading ? (
+              <InfinitySpin 
+                color="red"
+                width="200"
+              />
+            ) : (
+              <p className="text-red-500 font-semibold mb-5">{jobs}</p>
+            )}
+            
           </div>
           
           <div>
